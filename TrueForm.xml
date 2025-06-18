@@ -1,0 +1,259 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+    
+    <Frame name="TrueForm" parent="UIParent" toplevel="true" FrameStrata="MEDIUM" inherits="BasicFrameTemplateWithInset" hidden="false">
+        <Size x="150" y="120"/>
+        <Anchors>
+            <Anchor point="CENTER" relativeTo="UIParent" relativePoint="UIParent" x="90" y="80"/>
+        </Anchors>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="$parent_BloodTexture" parentKey="bloodTexture" file="Interface/AddOns/TrueForm/images/bloodsplatter.png" alpha="0.5">
+                    <Size x="256" y="256"/>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad>
+                TrueForm_OnLoad(self)
+                tinsert(UISpecialFrames, self:GetName())
+                self.TitleText:SetText("TrueForm Tracker")
+                self:SetMovable(true)
+                self:RegisterForDrag("LeftButton")
+            </OnLoad>
+            <OnMouseDown>
+                self:Raise()
+                if Angleur.visual:IsShown() then
+                    Angleur.visual:Raise()
+                end
+            </OnMouseDown>
+            <OnDragStart>
+                self:StartMoving()
+                if Angleur.visual:IsShown() then
+                    Angleur.visual:Raise()
+                end
+            </OnDragStart>
+            <OnDragStop>
+                self:StopMovingOrSizing()
+                if Angleur.visual:IsShown() then
+                    Angleur.visual:Raise()
+                end
+            </OnDragStop>
+        </Scripts>
+        <Frames>
+            <Frame name="$parent_Visual" parentKey="visual" hidden="false">
+                <Size x="42" y="42"/>
+                <Anchors>
+                    <Anchor point="CENTER" x="0" y="-15"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString inherits="GameFontNormalMed2Outline" parentKey="text" text="WORGEN">
+                            <Color r="1" g="1" b="1"/>
+                            <Anchors>
+                                <Anchor point="BOTTOM" relativeTo="$parent" relativePoint="TOP" x="1" y="5"/>
+                            </Anchors>
+                        </FontString>
+                        <Texture name="$parent_Human" parentKey="human" file="Interface/ICONS/Achievement_Character_Human_Male" hidden="true">
+                            <Size x="42" y="42"/>
+                            <Anchors>
+                                <Anchor point="CENTER"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture name="$parent_Worgen" parentKey="worgen" file="Interface/ICONS/achievement_worganhead" hidden="true">
+                            <Size x="42" y="42"/>
+                            <Anchors>
+                                <Anchor point="CENTER"/>
+                            </Anchors>
+                        </Texture>
+                        <Texture name="$parent_Border" parentKey="border" file="Interface/AddOns/TrueForm/images/visualframe.png">
+                            <Size x="54" y="54"/>
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER" x="0" y="0"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnEnter>
+                        local colorYello = CreateColor(1.0, 0.82, 0.0)
+                        local colorRed = CreateColor(0.51, 0.05, 0.03)
+                        local colorGreen = CreateColor(0, 0.73, 0)
+                        GameTooltip:SetOwner(self, "ANCHOR_NONE")
+                        GameTooltip:SetPoint("TOPLEFT", self, "TOPRIGHT")
+                        GameTooltip:SetPadding(200, 300)
+                        if TrueFormVariables.currentForm == 1 then
+                            GameTooltip:AddLine("Current Form: " .. colorRed:WrapTextInColorCode("Worgen"))
+                        elseif TrueFormVariables.currentForm == 0 then
+                            GameTooltip:AddLine("Current Form: " .. colorGreen:WrapTextInColorCode("Human"))
+                        else
+                            GameTooltip:AddLine("Current Form: Not Tracking")
+                        end
+                        GameTooltip:AddLine(" ")
+                        if GetCVar("ActionButtonUseKeyDown") == "1" then
+                            GameTooltip:AddLine("To always transform into\n" .. colorRed:WrapTextInColorCode("Worgen  ") .. "form,\nadd:\n" .. colorYello:WrapTextInColorCode("/click TrueForm_TurnWorgen MouseButton 1\n") .. "to your macros.\n\n", 1, 1, 1, false)
+                            GameTooltip:AddLine("To always transform into\n" .. colorGreen:WrapTextInColorCode("Human  ") .. "form,\nadd:\n" .. colorYello:WrapTextInColorCode("/click TrueForm_TurnHuman MouseButton 1\n") .. "to your macros.\n\n", 1, 1, 1, false)
+                        elseif GetCVar("ActionButtonUseKeyDown") == "0" then
+                            GameTooltip:AddLine("To always transform into\n" .. colorRed:WrapTextInColorCode("Worgen  ") .. "form,\nadd:\n" .. colorYello:WrapTextInColorCode("/click TrueForm_TurnWorgen\n") .. "to your macros.\n\n", 1, 1, 1, false)
+                            GameTooltip:AddLine("To always transform into\n" .. colorGreen:WrapTextInColorCode("Human  ") .. "form,\nadd:\n" .. colorYello:WrapTextInColorCode("/click TrueForm_TurnHuman\n") .. "to your macros.\n\n", 1, 1, 1, false)
+                        end
+                        GameTooltip:AddLine("Or use the " .. colorYello:WrapTextInColorCode("Macro Maker!"), 1, 1, 1, false)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                </Scripts>
+            </Frame>
+            <Button name="$parent_TurnHuman" parentKey="turnHuman" inherits="SecureActionButtonTemplate" hidden="true">
+                <Size x="42" y="42"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="37" y="-54"/>
+                </Anchors>
+            </Button>
+            <Button name="$parent_TurnWorgen" parentKey="turnWorgen" inherits="SecureActionButtonTemplate" hidden="true">
+                <Size x="42" y="42"/>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parent_TurnHuman" relativePoint="RIGHT" x="35" y="0"/>
+                </Anchors>
+            </Button>
+            <Frame name="$parent_Problems" parentKey="problems" hidden="true">
+                <Size x="140" y="24"/>
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-26"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        local problemsbackground = self:CreateTexture("$parent_Texture", "ARTWORK")
+                        problemsbackground:SetTexture("Interface/AddOns/TrueForm/images/problems.png")
+                        problemsbackground:SetPoint("CENTER")
+                        problemsbackground:SetSize("160", "48")
+
+                        local problemstext = self:CreateFontString("$parent_Text", "ARTWORK", "Game15Font")
+                        problemstext:SetPoint("CENTER")
+                        local color = CreateColor(1.0, 0, 0)
+                        problemstext:SetText(color:WrapTextInColorCode("Not Tracking"))
+                    </OnLoad>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", 45)
+                        GameTooltip:SetPadding(400, 300)
+                        local colorYello = CreateColor(1.0, 0.82, 0.0)
+                        local colorRed = CreateColor(0.51, 0.05, 0.03)
+                        GameTooltip:AddLine(colorRed:WrapTextInColorCode("TrueForm " ) .. "has not started tracking your form yet.\n\nTo kickstart it, do one of:\n"
+                        .. colorYello:WrapTextInColorCode("1)") .. " Enter combat once\n"
+                        .. colorYello:WrapTextInColorCode("2)") .. " Cast Running Wild\n"
+                        .. colorYello:WrapTextInColorCode("3)") .. " Cast Darkflight\n",
+                        1, 1, 1, false)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                </Scripts>
+            </Frame>
+            <Button name="$parent_CreateMacro" parentKey="createMacro" inherits="UIPanelSquareButton" hidden="true">
+                <Size x="80" y="42"/>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPRIGHT" x="-2" y="-20"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString text="Generate&#xA;Macros" parentKey="text" inherits="GameFontNormal">
+                            <Anchors>
+                                <Anchor point="CENTER" relativeTo="$parent" relativePoint="CENTER"/>
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad>
+                        self.icon:SetTexture(nil)
+                    </OnLoad>
+                    <OnEnter>
+                        GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", 75, 2)
+                        GameTooltip:SetPadding(400, 300)
+                        local colorYello = CreateColor(1.0, 0.82, 0.0)
+                        local colorRed = CreateColor(0.51, 0.05, 0.03)
+                        GameTooltip:AddLine("Click the button to add an example of a " .. colorRed:WrapTextInColorCode("TrueForm ") .. "macro to your " ..
+                        colorYello:WrapTextInColorCode("General Macros ") ..  "Tab.", 1, 1, 1, true)
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnClick>
+                        local colorYello = CreateColor(1.0, 0.82, 0.0)
+                        if InCombatLockdown() then
+                            print(colorYello:WrapTextInColorCode("In Combat: ") .. "please try again after combat ends.")
+                            return
+                        end
+                        self:Disable()
+                        self.text:SetTextColor(0.8, 0.8, 0.8)
+                        TrueForm_GenerateMacros()
+                        print("Button disabled to prevent spamming and flooding of General Macros Tab.")
+                        print("You can press it again after a reload/relog.")
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+
+    <Frame parent="TrueForm" name="$parent_MacroMaker" frameStrata="HIGH" toplevel="true" parentKey="macroMaker" hidden="false">
+        <Size x="256" y="128"/>
+        <Anchors>
+            <Anchor point="RIGHT" relativeTo="$parent" relativePoint="LEFT"/>
+        </Anchors>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString name="$parent_Title" parentKey="title" text="Macro Maker" inherits="SplashHeaderFont">
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="$parent" relativePoint="TOP" x="0" y="-13"/>
+                    </Anchors>
+                </FontString>
+                <Texture name="$parent_Background" file="Interface/AddOns/TrueForm/images/macromaker.png" parentKey="background" hidden="false">
+                    <Size x="256" y="128"/>
+                    <Anchors>
+                        <Anchor point="CENTER"/>
+                    </Anchors>
+                </Texture>
+                <Texture name="$parent_Curly" parentKey="curly" file="Interface/AddOns/TrueForm/images/curly.png">
+                    <Size x="450" y="100"/>
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="$parent" relativePoint="BOTTOM" x="0" y="8"/>
+                    </Anchors>
+                </Texture>
+                <FontString name="$parent_Explanation" parentKey="explanation" text="Drag spells/items/macros here&#xA;to generate TrueForm macros." inherits="GameFontNormalLarge">
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="$parent_Curly" relativePoint="BOTTOM" x="0" y="39"/>
+                    </Anchors>
+                </FontString>
+                
+            </Layer>
+        </Layers>
+        <Frames>
+            <Button name="$parent_Human" parentKey="human" frameStrata="MEDIUM" toplevel="false" inherits="GrabberButtonTemplate" hidden="false" scale="1.2">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" x="32" y="-8"/>
+                </Anchors>
+            </Button>
+            <Button name="$parent_Worgen" parentKey="worgen" frameStrata="MEDIUM" toplevel="false" inherits="GrabberButtonTemplate" hidden="false" scale="1.2">
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parent" relativePoint="RIGHT" x="-33" y="-8"/>
+                </Anchors>
+            </Button>
+        </Frames>
+    </Frame>
+
+    <Frame name="TrueForm_MacroAlertAnim" frameStrata="TOOLTIP" toplevel="true" inherits="TrueFormPorted_ActionBarButtonSpellActivationAlert">
+        <Size x="64" y="64"/>
+        <Scripts>
+            <OnEnter>
+                self:Hide()
+            </OnEnter>
+        </Scripts>
+    </Frame>
+
+</Ui>

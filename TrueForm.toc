@@ -1,0 +1,14 @@
+## Interface: 110107
+## Title: True Form
+## Author: LegolandoBloom
+## Notes: Become a master at controlling your worgen rage - Now with a visual MacroMaker!
+## Version: 2.0
+## SavedVariablesPerCharacter: TrueFormVariables
+## IconTexture: Interface\AddOns\TrueForm\images\trueformiconsmall.png
+## X-Curse-Project-ID: 854033
+
+TrueForm.lua
+slashcommands.lua
+firstInstall.lua
+myTemplates.xml
+TrueForm.xml

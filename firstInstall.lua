@@ -1,0 +1,10 @@
+function TrueForm_FirstInstall()
+    local colorRed = CreateColor(0.51, 0.05, 0.03)
+    local colorYello = CreateColor(1.0, 0.82, 0.0)
+    local colorGray = CreateColor(0.75, 0.75, 0.75)
+    print(colorRed:WrapTextInColorCode("TrueForm: ") .. "Thank you for installing!")
+    print(" Example macros of the AddOn have been added to your " .. colorYello:WrapTextInColorCode("General Macros ") .. "tab.")
+    print(" To show the " .. colorYello:WrapTextInColorCode("Form Tracker ") .. "and " .. colorYello:WrapTextInColorCode("Macro Maker") .. ", type " .. colorYello:WrapTextInColorCode("/trueform ") .. "or " .. colorYello:WrapTextInColorCode("/tftf" .. "."))
+    print(" You can contact me on Curseforge for any bug reports/suggestions :)" .. colorGray:WrapTextInColorCode(" - Legolando"))
+    TrueForm_GenerateMacros()
+end
