@@ -1,4 +1,4 @@
-## Interface: 120001
+## Interface: 120000
 ## Title: True Form
 ## Author: LegolandoBloom
 ## Notes: Become a master at controlling your worgen rage - Now with a visual MacroMaker!
