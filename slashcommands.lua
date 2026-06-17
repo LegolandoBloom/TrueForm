@@ -1,16 +1,18 @@
+local colorRed = CreateColor(0.51, 0.05, 0.03)
+
 local function resetCurrentForm()
-    TrueFormVariables.currentForm = 2
+    TrueFormCharacterConfig.currentForm = 2
     TrueForm_HandleButtons(2)
     print("form tracker reset")
 end
 
 local function printCurrentForm()
-    print(TrueFormVariables.currentForm)
+    print(TrueFormCharacterConfig.currentForm)
 end
 
 local function toggleTrueForm()
     if InCombatLockdown() then
-        local colorRed = CreateColor(0.51, 0.05, 0.03)
+
         print(colorRed:WrapTextInColorCode("TrueForm:")," Can't open visual menu in combat, try again after combat ends.")
         return
     end
@@ -31,7 +33,7 @@ SlashCmdList["TRUFORMPR"] = printCurrentForm
 
 
 local function resetFirstInstall()
-    TrueFormVariables.firstInstallDone = false
+    TrueFormConfig.firstInstall = true
 end
 
 SLASH_TRUFORMREINSTALL1 = "/tfreins"

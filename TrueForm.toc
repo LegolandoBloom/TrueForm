@@ -3,7 +3,8 @@
 ## Author: LegolandoBloom
 ## Notes: Become a master at controlling your worgen rage - Now with a visual MacroMaker!
 ## Version: 2.0
-## SavedVariablesPerCharacter: TrueFormVariables
+## SavedVariablesPerCharacter: TrueFormCharacterConfig
+## SavedVariables: TrueFormConfig
 ## IconTexture: Interface\AddOns\TrueForm\images\trueformiconsmall.png
 ## X-Curse-Project-ID: 854033
 

@@ -84,10 +84,9 @@
                         local colorGreen = CreateColor(0, 0.73, 0)
                         GameTooltip:SetOwner(self, "ANCHOR_NONE")
                         GameTooltip:SetPoint("TOPLEFT", self, "TOPRIGHT")
-                        GameTooltip:SetPadding(200, 300)
-                        if TrueFormVariables.currentForm == 1 then
+                        if TrueFormCharacterConfig.currentForm == 1 then
                             GameTooltip:AddLine("Current Form: " .. colorRed:WrapTextInColorCode("Worgen"))
-                        elseif TrueFormVariables.currentForm == 0 then
+                        elseif TrueFormCharacterConfig.currentForm == 0 then
                             GameTooltip:AddLine("Current Form: " .. colorGreen:WrapTextInColorCode("Human"))
                         else
                             GameTooltip:AddLine("Current Form: Not Tracking")
@@ -139,7 +138,6 @@
                     </OnLoad>
                     <OnEnter>
                         GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", 45)
-                        GameTooltip:SetPadding(400, 300)
                         local colorYello = CreateColor(1.0, 0.82, 0.0)
                         local colorRed = CreateColor(0.51, 0.05, 0.03)
                         GameTooltip:AddLine(colorRed:WrapTextInColorCode("TrueForm " ) .. "has not started tracking your form yet.\n\nTo kickstart it, do one of:\n"
@@ -174,7 +172,6 @@
                     </OnLoad>
                     <OnEnter>
                         GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT", 75, 2)
-                        GameTooltip:SetPadding(400, 300)
                         local colorYello = CreateColor(1.0, 0.82, 0.0)
                         local colorRed = CreateColor(0.51, 0.05, 0.03)
                         GameTooltip:AddLine("Click the button to add an example of a " .. colorRed:WrapTextInColorCode("TrueForm ") .. "macro to your " ..
